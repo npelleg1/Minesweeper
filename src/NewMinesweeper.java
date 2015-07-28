@@ -1,5 +1,4 @@
 //project NewMinesweeper
-
 import java.awt.*;
 import java.awt.event.*;
 
@@ -7,13 +6,12 @@ import javax.swing.*;
 
 public class NewMinesweeper extends JFrame{
 	
+	private static final long serialVersionUID = 1L;
 	private Board minefield;
 	public int click_count;
 
 	public static void main(String[] args) {
 		NewMinesweeper game = new NewMinesweeper();
-		Board minefield = new Board();
-		int mine_count;
 		game.pack();
 		game.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		game.setVisible(true);
@@ -28,7 +26,9 @@ public class NewMinesweeper extends JFrame{
 	}
 	
 	private class CheckButton extends JButton {
-
+		
+		private static final long serialVersionUID = 1L;
+		
 		public CheckButton(String s){
 			this.setText(s);
 			addMouseListener(new MouseAdapter(){
@@ -36,8 +36,8 @@ public class NewMinesweeper extends JFrame{
 				public void mousePressed(MouseEvent e){
 					for (int i = 0; i < 10; i++){
 						for (int j = 0; j < 10; j++){
-							minefield.board[i][j].Co = true;
-							minefield.board[i][j].Mo = false;
+							minefield.board[i][j].setClickOn(true);
+							minefield.board[i][j].setMarkOn(false);
 						}
 					}
 				}
@@ -47,6 +47,8 @@ public class NewMinesweeper extends JFrame{
 	
 	private class MarkButton extends JButton {
 
+		private static final long serialVersionUID = 1L;
+
 		public MarkButton(String s){
 			this.setText(s);
 			addMouseListener(new MouseAdapter(){
@@ -54,8 +56,8 @@ public class NewMinesweeper extends JFrame{
 				public void mousePressed(MouseEvent e){
 					for (int i = 0; i < 10; i++){
 						for (int j = 0; j < 10; j++){
-							minefield.board[i][j].Mo = true;
-							minefield.board[i][j].Co = false;
+							minefield.board[i][j].setMarkOn(true);
+							minefield.board[i][j].setClickOn(false);
 						}
 					}
 				}
@@ -80,9 +82,5 @@ public class NewMinesweeper extends JFrame{
 			}
 		} 
 		return inner;
-	}
-	
-	public Board getMinefield(){
-		return minefield;
 	}
 }
