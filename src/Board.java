@@ -12,7 +12,7 @@ public class Board{
 		Random rand = new Random();
 		board = new MyButton[10][10];
 		hasLost = false;
-		int rand1, rand2, i, j;
+		int i, j;
 		for (i = 0; i < 10; i++){
 			for (j = 0; j < 10; j++){
 				board[i][j] = new MyButton(i, j);
@@ -20,6 +20,126 @@ public class Board{
 					@Override
 					public void mousePressed(MouseEvent e){
 						MyButton button = (MyButton) e.getSource();
+						if(click_count == 0){
+							int rand1, rand2;
+							while (placed_mines < mines){
+								rand1 = rand.nextInt(10);
+								rand2 = rand.nextInt(10);
+								if (board[rand1][rand2].getHasMine() != true && !(button.getI() == rand1 && button.getJ() == rand2)){
+									board[rand1][rand2].setHasMine(true);
+									placed_mines++;
+								}
+							}
+							for (int k = 0; k < 10; k++){
+								for(int l = 0; l < 10; l++){
+									neigh_count = 0;
+									if(k-1 < 0 || k+1 > 9 || l-1 < 0 || l+1 > 9){
+										if(k == 0 && l == 0){
+											if(board[k+1][l].getHasMine() == true)
+												neigh_count += 1;
+											if(board[k+1][l+1].getHasMine() == true)
+												neigh_count += 1;
+											if(board[k][l+1].getHasMine() == true)
+												neigh_count += 1;
+										}
+										else if (k == 0 && l == 9){
+											if(board[k+1][l].getHasMine() == true)
+												neigh_count += 1;
+											if(board[k+1][l-1].getHasMine() == true)
+												neigh_count += 1;
+											if(board[k][l-1].getHasMine() == true)
+												neigh_count += 1;
+										}
+										else if (k == 9 && l == 0){
+											if(board[k][l+1].getHasMine() == true)
+												neigh_count += 1;
+											if(board[k-1][l+1].getHasMine() == true)
+												neigh_count += 1;
+											if(board[k-1][l].getHasMine() == true)
+												neigh_count += 1;
+										}
+										else if (k == 9 && l == 9){
+											if(board[k][l-1].getHasMine() == true)
+												neigh_count += 1;
+											if(board[k-1][l].getHasMine() == true)
+												neigh_count += 1;
+											if(board[k-1][l-1].getHasMine() == true)
+												neigh_count += 1;
+										}
+										else if (k == 0){
+											if(board[k][l-1].getHasMine() == true)
+												neigh_count += 1;
+											if(board[k][l+1].getHasMine() == true)
+												neigh_count += 1;
+											if(board[k+1][l-1].getHasMine() == true)
+												neigh_count += 1;
+											if(board[k+1][l].getHasMine() == true)
+												neigh_count += 1;
+											if(board[k+1][l+1].getHasMine() == true)
+												neigh_count += 1;
+										}
+										else if (l == 9){
+											if(board[k-1][l].getHasMine() == true)
+												neigh_count += 1;
+											if(board[k+1][l].getHasMine() == true)
+												neigh_count += 1;
+											if(board[k-1][l-1].getHasMine() == true)
+												neigh_count += 1;
+											if(board[k][l-1].getHasMine() == true)
+												neigh_count += 1;
+											if(board[k+1][l-1].getHasMine() == true)
+												neigh_count += 1;
+										}
+										else if (k == 9) {
+											if(board[k][l-1].getHasMine() == true)
+												neigh_count += 1;
+											if(board[k][l+1].getHasMine() == true)
+												neigh_count += 1;
+											if(board[k-1][l-1].getHasMine() == true)
+												neigh_count += 1;
+											if(board[k-1][l].getHasMine() == true)
+												neigh_count += 1;
+											if(board[k-1][l+1].getHasMine() == true)
+												neigh_count += 1;
+										}
+										else if (l == 0){
+											if(board[k-1][l].getHasMine() == true)
+												neigh_count += 1;
+											if(board[k+1][l].getHasMine() == true)
+												neigh_count += 1;
+											if(board[k+1][l+1].getHasMine() == true)
+												neigh_count += 1;
+											if(board[k][l+1].getHasMine() == true)
+												neigh_count += 1;
+											if(board[k-1][l+1].getHasMine() == true)
+												neigh_count += 1;
+										}
+									}
+									else{
+										if (board[k-1][l-1].getHasMine() == true)
+											neigh_count += 1;
+										if (board[k][l-1].getHasMine() == true)
+											neigh_count += 1;
+										if (board[k+1][l-1].getHasMine() == true)
+											neigh_count += 1;
+										if (board[k-1][l].getHasMine() == true)
+											neigh_count += 1;
+										if (board[k+1][l].getHasMine() == true)
+											neigh_count += 1;
+										if (board[k-1][l+1].getHasMine() == true)
+											neigh_count += 1;
+										if (board[k][l+1].getHasMine() == true)
+											neigh_count += 1;
+										if (board[k+1][l+1].getHasMine() == true)
+											neigh_count += 1;
+									}
+									if(board[k][l].getHasMine() != true)
+										board[k][l].setN(neigh_count);
+									else
+										board[k][l].setN(10);
+								}
+							}
+						}
 						if(button.getClickOn() == true && button.getIsMarked() == false && hasLost == false){
 							button.setHasBeenClicked(true);
 							if (button.getHasMine() == true){
@@ -78,123 +198,6 @@ public class Board{
 						}
 					}
 				});
-			}
-		}
-		while (placed_mines < mines){
-			rand1 = rand.nextInt(10);
-			rand2 = rand.nextInt(10);
-			if (board[rand1][rand2].getHasMine() != true){
-				board[rand1][rand2].setHasMine(true);
-				placed_mines++;
-			}
-		}
-		for (i = 0; i < 10; i++){
-			for(j = 0; j < 10; j++){
-				neigh_count = 0;
-				if(i-1 < 0 || i+1 > 9 || j-1 < 0 || j+1 > 9){
-					if(i == 0 && j == 0){
-						if(board[i+1][j].getHasMine() == true)
-							neigh_count += 1;
-						if(board[i+1][j+1].getHasMine() == true)
-							neigh_count += 1;
-						if(board[i][j+1].getHasMine() == true)
-							neigh_count += 1;
-					}
-					else if (i == 0 && j == 9){
-						if(board[i+1][j].getHasMine() == true)
-							neigh_count += 1;
-						if(board[i+1][j-1].getHasMine() == true)
-							neigh_count += 1;
-						if(board[i][j-1].getHasMine() == true)
-							neigh_count += 1;
-					}
-					else if (i == 9 && j == 0){
-						if(board[i][j+1].getHasMine() == true)
-							neigh_count += 1;
-						if(board[i-1][j+1].getHasMine() == true)
-							neigh_count += 1;
-						if(board[i-1][j].getHasMine() == true)
-							neigh_count += 1;
-					}
-					else if (i == 9 && j == 9){
-						if(board[i][j-1].getHasMine() == true)
-							neigh_count += 1;
-						if(board[i-1][j].getHasMine() == true)
-							neigh_count += 1;
-						if(board[i-1][j-1].getHasMine() == true)
-							neigh_count += 1;
-					}
-					else if (i == 0){
-						if(board[i][j-1].getHasMine() == true)
-							neigh_count += 1;
-						if(board[i][j+1].getHasMine() == true)
-							neigh_count += 1;
-						if(board[i+1][j-1].getHasMine() == true)
-							neigh_count += 1;
-						if(board[i+1][j].getHasMine() == true)
-							neigh_count += 1;
-						if(board[i+1][j+1].getHasMine() == true)
-							neigh_count += 1;
-					}
-					else if (j == 9){
-						if(board[i-1][j].getHasMine() == true)
-							neigh_count += 1;
-						if(board[i+1][j].getHasMine() == true)
-							neigh_count += 1;
-						if(board[i-1][j-1].getHasMine() == true)
-							neigh_count += 1;
-						if(board[i][j-1].getHasMine() == true)
-							neigh_count += 1;
-						if(board[i+1][j-1].getHasMine() == true)
-							neigh_count += 1;
-					}
-					else if (i == 9) {
-						if(board[i][j-1].getHasMine() == true)
-							neigh_count += 1;
-						if(board[i][j+1].getHasMine() == true)
-							neigh_count += 1;
-						if(board[i-1][j-1].getHasMine() == true)
-							neigh_count += 1;
-						if(board[i-1][j].getHasMine() == true)
-							neigh_count += 1;
-						if(board[i-1][j+1].getHasMine() == true)
-							neigh_count += 1;
-					}
-					else if (j == 0){
-						if(board[i-1][j].getHasMine() == true)
-							neigh_count += 1;
-						if(board[i+1][j].getHasMine() == true)
-							neigh_count += 1;
-						if(board[i+1][j+1].getHasMine() == true)
-							neigh_count += 1;
-						if(board[i][j+1].getHasMine() == true)
-							neigh_count += 1;
-						if(board[i-1][j+1].getHasMine() == true)
-							neigh_count += 1;
-					}
-				}
-				else{
-					if (board[i-1][j-1].getHasMine() == true)
-						neigh_count += 1;
-					if (board[i][j-1].getHasMine() == true)
-						neigh_count += 1;
-					if (board[i+1][j-1].getHasMine() == true)
-						neigh_count += 1;
-					if (board[i-1][j].getHasMine() == true)
-						neigh_count += 1;
-					if (board[i+1][j].getHasMine() == true)
-						neigh_count += 1;
-					if (board[i-1][j+1].getHasMine() == true)
-						neigh_count += 1;
-					if (board[i][j+1].getHasMine() == true)
-						neigh_count += 1;
-					if (board[i+1][j+1].getHasMine() == true)
-						neigh_count += 1;
-				}
-				if(board[i][j].getHasMine() != true)
-					board[i][j].setN(neigh_count);
-				else
-					board[i][j].setN(10);
 			}
 		}
 	}
