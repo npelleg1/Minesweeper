@@ -7,6 +7,8 @@ public class Board{
 	public MyButton[][] board;
 	private int mines = 20, placed_mines = 0, neigh_count = 0, click_count = 0, mine_count = 0;
 	public boolean hasLost;
+	public long start, finish;
+	public double elapsed;
 	
 	public Board(){
 		Random rand = new Random();
@@ -139,12 +141,16 @@ public class Board{
 										board[k][l].setN(10);
 								}
 							}
+							start = System.currentTimeMillis();
 						}
 						if(button.getClickOn() == true && button.getIsMarked() == false && hasLost == false){
 							button.setHasBeenClicked(true);
 							if (button.getHasMine() == true){
 								button.setBackground(Color.RED);
 								hasLost = true;
+								finish = System.currentTimeMillis();
+								elapsed = (double)(finish-start)/1000;
+								System.out.println(elapsed);
 							}
 							else if(button.getN() == 0){
 								button.setBackground(Color.GRAY);
@@ -195,6 +201,9 @@ public class Board{
 									}
 								}
 							}
+							finish = System.currentTimeMillis();
+							elapsed = (double)(finish-start)/1000;
+							System.out.println(elapsed);
 						}
 					}
 				});
